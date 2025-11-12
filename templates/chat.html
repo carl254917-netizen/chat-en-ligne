@@ -6,6 +6,7 @@
 </head>
 <body>
     <h2>Bienvenue dans le chat !</h2>
+    <p>Utilisateurs en ligne : <span id="userCount">0</span></p>
     <ul id="messages"></ul>
     <input id="message" autocomplete="off" placeholder="Tape ton message..." />
     <button onclick="sendMessage()">Envoyer</button>
@@ -24,6 +25,10 @@
             socket.send(input.value);
             input.value = '';
         }
+
+        socket.on('user_count', function(count) {
+            document.getElementById('userCount').textContent = count;
+        });
     </script>
 </body>
 </html>
