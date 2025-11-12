@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Chat en ligne</title>
-    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"></script>
 </head>
 <body>
     <h2>Bienvenue dans le chat !</h2>
@@ -25,6 +25,13 @@
             socket.send(input.value);
             input.value = '';
         }
+
+        document.getElementById('message').addEventListener('keydown', function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // empêche le saut de ligne
+                sendMessage();          // appelle la même fonction que le bouton
+            }
+        });
 
         socket.on('user_count', function(count) {
             document.getElementById('userCount').textContent = count;
