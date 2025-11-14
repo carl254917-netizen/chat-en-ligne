@@ -18,11 +18,6 @@
         <button onclick="sendMessage()">Envoyer</button>
     </div>
 
-    <p>Utilisateurs en ligne : <span id="userCount">0</span></p>
-    <ul id="messages"></ul>
-    <input id="message" autocomplete="off" placeholder="Tape ton message..." />
-    <button onclick="sendMessage()">Envoyer</button>
-
     <script>
         var socket = io();
         var pseudo = null;
