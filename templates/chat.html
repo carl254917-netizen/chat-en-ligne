@@ -6,6 +6,18 @@
 </head>
 <body>
     <h2>Bienvenue dans le chat !</h2>
+        <div id="login">
+        <input id="pseudo" autocomplete="off" placeholder="Choisis ton pseudo..." />
+        <button onclick="enterChat()">Entrer</button>
+    </div>
+
+    <div id="chat" style="display:none;">
+        <p>Utilisateurs en ligne : <span id="userCount">0</span></p>
+        <ul id="messages"></ul>
+        <input id="message" autocomplete="off" placeholder="Tape ton message..." />
+        <button onclick="sendMessage()">Envoyer</button>
+    </div>
+
     <p>Utilisateurs en ligne : <span id="userCount">0</span></p>
     <ul id="messages"></ul>
     <input id="message" autocomplete="off" placeholder="Tape ton message..." />
@@ -13,6 +25,18 @@
 
     <script>
         var socket = io();
+        var pseudo = null;
+
+        function enterChat() {
+            var inputPseudo = document.getElementById('pseudo');
+            if (inputPseudo.value.trim() !== "") {
+                pseudo = inputPseudo.value.trim();
+                document.getElementById('login').style.display = "none"; // cache la zone login
+                document.getElementById('chat').style.display = "block"; // affiche le chat
+            } else {
+                alert("Veuillez entrer un pseudo !");
+            }
+        }
 
         socket.on('message', function(msg){
             var item = document.createElement('li');
@@ -22,14 +46,16 @@
 
         function sendMessage() {
             var input = document.getElementById('message');
-            socket.send(input.value);
-            input.value = '';
+            if (input.value.trim() !== "" && pseudo) {
+                socket.send(pseudo + " : " + input.value);
+                input.value = '';
+            }
         }
 
         document.getElementById('message').addEventListener('keydown', function(event) {
             if (event.key === "Enter") {
-                event.preventDefault(); // empêche le saut de ligne
-                sendMessage();          // appelle la même fonction que le bouton
+                event.preventDefault();
+                sendMessage();
             }
         });
 
